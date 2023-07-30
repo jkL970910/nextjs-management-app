@@ -1,12 +1,12 @@
 'use client';
 
 import { register, signin } from "@/lib/api";
-import { useCallback, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Card from "./Card";
 import Button from "./Button";
 import Input from "./Input";
+import { useState } from "react";
 
 const registerContent = {
   linkUrl: "/signin",
@@ -30,8 +30,8 @@ export default function AuthForm({ mode }: { mode: "register" | "signin"  }) {
   const [formState, setFormState] = useState({...initial});
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.proventDefault();
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
 
     if (mode === 'register') {
       await register(formState);
@@ -40,6 +40,7 @@ export default function AuthForm({ mode }: { mode: "register" | "signin"  }) {
     }
 
     setFormState(initial);
+    router.replace('/home');
   }
 
   const content = mode === 'register' ? registerContent : signinContent;
@@ -64,7 +65,7 @@ export default function AuthForm({ mode }: { mode: "register" | "signin"  }) {
                   value={formState.firstName}
                   className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
                   onChange={(e) =>
-                    setFormState((s) => ({ ...s, firstName: e.target.value })) //to use this callback is important since it make sure those asynchrounys request were handled in sequence 
+                    setFormState((s) => ({ ...s, firstName: e.target.value }))
                   }
                 />
               </div>
